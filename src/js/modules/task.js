@@ -1,7 +1,13 @@
 const createID = () => {
+  const symbolsForID = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const min = 1;
-  const max = 1000
-  return String(Math.floor(Math.random() * (max - min + 1) + min)); 
+  const max = symbolsForID.length;
+  let id = '';
+  while (id.length < 6) {
+    const index = (Math.floor(Math.random() * (max - min + 1) + min));    
+    id += symbolsForID[index];
+  }
+  return id;
 }
 
 export class Task {
@@ -20,6 +26,10 @@ export class Task {
   set count(data) {
     console.log('You can`t');
   };
+
+  get getTaskCount() {
+    return this.#count;
+  }  
 
   changeTaskName(data) {
     this.#taskName = data;
