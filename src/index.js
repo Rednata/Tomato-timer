@@ -1,22 +1,25 @@
 import './scss/index.scss';
+import { Task } from './js/modules/task.js';
+import { Timer } from './js/modules/timer.js';
 
-import './scss/index.scss';
+//  Создаем новую задачу:
+const task1 = new Task('Просто новая задача');
+const task2 = new Task('Вторая задача');
+const task3 = new Task('Третья задача');
 
-import { Task } from './js/modules/classes.js';
+// Создаем таймер:
+const timer = new Timer({
+  time: 10,
+  pause: 5,
+  bigPause: 10,
+});
 
-const newTask = new Task('Write homework');
-console.log(newTask);
+//  Методы работы c таймером: 
+timer.addTask(task1);
+timer.addTask(task2);
+timer.addTask(task3);
 
-newTask.taskName = 'rrrrrrrrrr';
-console.log(newTask);
+timer.addInActiveTask(task1);
+console.log(timer);
 
-newTask.changeTaskName('sdfsdf');
-console.log(newTask);
-
-newTask.changeTaskCount();
-newTask.changeTaskCount();
-newTask.changeTaskCount();
-console.log(newTask);
-
-newTask.count = 5;
-console.log(newTask);
+timer.runTask();
