@@ -1,22 +1,25 @@
 import './scss/index.scss';
+import { TaskFactory } from './js/modules/Task.js';
+import { Tomato } from './js/modules/Tomato.js';
+import { RenderTomato } from './js/modules/RenderTomato.js';
 
-console.log('Hello world');
-const temp = 10;
-console.log('temp: ', temp);
+import { ControllerTomato } from './js/modules/ControllerTomato.js';
+import { list } from 'postcss';
 
-let count = 0;
-const imp = ['default', 'important', 'so-so']
-document.querySelector('.button-importance').addEventListener('click', ({target}) => {
-  count += 1;
-  if (count >= imp.length) {
-    count = 0
-  }
+const commonParent = document.querySelector('.pomodoro-form');
+const listParent = document.querySelector('.pomodoro-tasks__quest-tasks');
 
-  for (let i = 0; i < imp.length; i++) {
-    if (count === i) {
-      target.classList.add(imp[i])
-    } else {
-      target.classList.remove(imp[i])
-    }
-  }
-})
+// const view = new RenderTomato(commonParent, listParent);
+
+// view.renderForm()
+
+const model = new Tomato({
+  time: 25,
+  pause: 5,
+  bigPause: 15
+});
+
+const view = new RenderTomato(commonParent, listParent);
+// const view = new RenderTomato(commonParent, listParent, controller);
+view.renderForm();
+
