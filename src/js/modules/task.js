@@ -10,7 +10,7 @@ const createID = () => {
   return id;
 }
 
-export class Task {
+class Task {
   #taskName;
   #count;
   constructor(taskName, count = 0) {
@@ -31,6 +31,10 @@ export class Task {
     return this.#count;
   }  
 
+  get taskName() {
+    return this.#taskName;
+  }  
+
   changeTaskName(data) {
     this.#taskName = data;
     return this;
@@ -40,5 +44,39 @@ export class Task {
     this.#count++;
     return this;
   }
-
 };
+
+class ImportantTask extends Task {
+  constructor(taskName, importance, count = 0) {
+    super(taskName, count);
+    this.importance = importance
+  }
+}
+
+class StandardTask extends Task {
+  constructor(taskName, importance, count = 0) {
+    super(taskName, count);
+    this.importance = importance || 'standard'
+  }
+}
+
+class UnimportantTask extends Task {
+  constructor(taskName, importance, count = 0) {
+    super(taskName, count);
+    this.importance = importance
+  }
+}
+
+export class TaskFactory {
+  static list = {
+    important: ImportantTask,
+    standard: StandardTask,
+    unimportant: UnimportantTask
+  };
+
+  create(name, importance, count) {
+    const TaskClass = TaskFactory.list[importance] || TaskFactory.list.standard;    
+    return new TaskClass(name, importance, count);    
+  }
+}
+

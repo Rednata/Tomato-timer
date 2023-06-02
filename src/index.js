@@ -1,25 +1,25 @@
 import './scss/index.scss';
-import { Task } from './js/modules/task.js';
-import { Timer } from './js/modules/timer.js';
+import { TaskFactory } from './js/modules/Task.js';
+import { Tomato } from './js/modules/Tomato.js';
+import { RenderTomato } from './js/modules/RenderTomato.js';
 
-//  Создаем новую задачу:
-const task1 = new Task('Просто новая задача');
-const task2 = new Task('Вторая задача');
-const task3 = new Task('Третья задача');
+import { ControllerTomato } from './js/modules/ControllerTomato.js';
+import { list } from 'postcss';
 
-// Создаем таймер:
-const timer = new Timer({
-  time: 10,
+const commonParent = document.querySelector('.pomodoro-form');
+const listParent = document.querySelector('.pomodoro-tasks__quest-tasks');
+
+// const view = new RenderTomato(commonParent, listParent);
+
+// view.renderForm()
+
+const model = new Tomato({
+  time: 25,
   pause: 5,
-  bigPause: 10,
+  bigPause: 15
 });
 
-//  Методы работы c таймером: 
-timer.addTask(task1);
-timer.addTask(task2);
-timer.addTask(task3);
+const view = new RenderTomato(commonParent, listParent);
+// const view = new RenderTomato(commonParent, listParent, controller);
+view.renderForm();
 
-timer.addInActiveTask(task1);
-console.log(timer);
-
-timer.runTask();

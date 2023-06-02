@@ -1,12 +1,14 @@
-import { Task } from './task.js';
-
-export class Timer {
+export class Tomato {
   constructor({time = 25, pause = 5, bigPause = 15, taskArray = []}) {
+    if (Tomato._instance) {
+      return Tomato._instance
+    }
     this.time = time;
     this.pause = pause;
     this.bigPause = bigPause;
     this.taskArray = taskArray;
     this.activeTaskID = null;
+    Tomato._instance = this;
   }
 
   addTask(task) {
@@ -29,7 +31,6 @@ export class Timer {
   }
   
   runTimer(activeTask) {
-
     let seconds = 0;
     const timerId = setInterval(() => {      
       console.log(seconds++);    
@@ -49,15 +50,15 @@ export class Timer {
   }
 
   runTask() {
-      const activeTaskID = this.activeTaskID;
-      const activeTask = this.taskArray.find(task => task.id === activeTaskID);
+    const activeTaskID = this.activeTaskID;
+    const activeTask = this.taskArray.find(task => task.id === activeTaskID);
+    
+    if (activeTask) {
+      this.runTimer(activeTask);
+    } else {
+      console.error('U havn`t active task');
       
-      if (activeTask) {
-        this.runTimer(activeTask);
-      } else {
-        console.error('U havn`t active task');
-        
-      }    
+    }    
   }
 }
 
