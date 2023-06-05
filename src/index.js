@@ -13,11 +13,11 @@ const listParent = document.querySelector('.pomodoro-tasks__quest-tasks');
 
 // view.renderForm()
 
-const model = new Tomato({
-  time: 25,
-  pause: 5,
-  bigPause: 15
-});
+// const model = new Tomato({
+//   time: 25,
+//   pause: 5,
+//   bigPause: 15
+// });
 
 const view = new RenderTomato(commonParent, listParent);
 // const view = new RenderTomato(commonParent, listParent, controller);

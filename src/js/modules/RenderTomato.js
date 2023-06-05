@@ -1,4 +1,3 @@
-import { list } from "postcss";
 import { ControllerTomato } from "./ControllerTomato.js";
 import { Tomato } from "./Tomato.js";
 
@@ -6,8 +5,12 @@ export class RenderTomato {
   constructor(commonParent, listParent) {
 
     this.controller = new ControllerTomato();
-        
-    // create form
+    this.formElement = this.createForm(commonParent, listParent);
+
+    this.bindListeners();
+  }
+
+  createForm(commonParent, listParent) {
     this.commonParent = commonParent;
     this.listParent = listParent;
 
@@ -32,28 +35,28 @@ export class RenderTomato {
     this.buttonFormSubmit.textContent = 'Добавить';
 
     this.form.append(this.input, this.buttonForm, this.buttonFormSubmit);
-      
-    this.bindListeners();
+
+    return this.form
   }
 
-    createActiveTask(taskName) {
-      if (this.commonParent.firstElementChild.classList.contains('window__panel')) {        
-        this.commonParent.firstElementChild.remove();
-      }
-      
-      this.panel = document.createElement('div');
-      this.panel.className = "window__panel";
-      this.panelTitle = document.createElement('p');
-      this.panelTitle.className = "window__panel-title";
-      this.panelTitle.textContent = `${taskName}`;
-      this.panelTaskText = document.createElement('div');
-      this.panelTaskText.className = "window__panel-task-text";
-      this.panelTaskText.textContent = "Томат 2";
-  
-      this.panel.append(this.panelTitle, this.panelTaskText);
-
-      this.renderActiveTask();
+  createActiveTask(taskName) {
+    if (this.commonParent.firstElementChild.classList.contains('window__panel')) {        
+      this.commonParent.firstElementChild.remove();
     }
+    
+    this.panel = document.createElement('div');
+    this.panel.className = "window__panel";
+    this.panelTitle = document.createElement('p');
+    this.panelTitle.className = "window__panel-title";
+    this.panelTitle.textContent = `${taskName}`;
+    this.panelTaskText = document.createElement('div');
+    this.panelTaskText.className = "window__panel-task-text";
+    this.panelTaskText.textContent = "Томат 2";
+
+    this.panel.append(this.panelTitle, this.panelTaskText);
+
+    this.renderActiveTask();
+  }
 
   createLiTask(taskName, id) {    
     this.li = document.createElement('li');
@@ -88,27 +91,13 @@ export class RenderTomato {
   bindListeners() {
     this.form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const currentTask = this.controller.submitForm(this.input);       
-      this.createLiTask(currentTask.taskName)               ;
+      this.controller.submitForm(this.input, this); 
       this.form.reset();
     })
 
     this.listParent.addEventListener('click', ({target}) => {
-      if (target.closest('li')) {
-        const tasksElem = Array.from(this.listParent.querySelectorAll('li'));
-
-        tasksElem.forEach(elem => elem.querySelector('button').classList.remove('pomodoro-tasks__task-text_active'));
-
-        const activeTarget = target.closest('li').querySelector('button');
-        activeTarget.classList.add('pomodoro-tasks__task-text_active');
-
-        this.createActiveTask(activeTarget.textContent);
-
-        const indexActiveTask = tasksElem.findIndex(elem => 
-          elem.querySelector('button').classList.contains('pomodoro-tasks__task-text_active'));
-
-        this.controller.addInActive(indexActiveTask)        
-        
+      if (target.closest('li')) {        
+        this.controller.addInActive(target.closest('li'), this);                
       }      
 
         
