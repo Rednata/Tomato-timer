@@ -1,6 +1,4 @@
 import { Tomato } from "./Tomato.js";
-import { TaskFactory } from "./Task.js";
-import { RenderTomato } from "./RenderTomato.js";
 
 export class ControllerTomato {
   constructor() {    
@@ -12,17 +10,36 @@ export class ControllerTomato {
     this.tomato = new Tomato(options);
   }
 
-  submitForm(elem) {            
-    const task = new TaskFactory();   
-    const currentTask = task.create(elem.value)    
-    this.tomato.addTask(currentTask); 
-    return currentTask;           
+  submitForm(elem, view) {            
+    this.tomato.createTask(elem.value, view);         
   }
 
-  addInActive(index) {
+  addInActive(currentRow, view) {        
+    this.removeActiveState(view.listParent);
+    this.setActiveState(currentRow);
     
-    this.tomato.addInActiveTask(this.tomato.taskArray[index]);    
+
+    const currentTask = this.getActiveTask(currentRow, this.tomato.taskArray);
+    this.tomato.addInActiveTask(currentTask, view);
   }
+
+  removeActiveState(listTask) {
+    const arrayTasks = listTask.querySelectorAll('li .pomodoro-tasks__task-text');
+    arrayTasks.forEach(elem => elem.classList.remove('pomodoro-tasks__task-text_active'))
+  }
+
+  setActiveState(currentRow) {    
+    currentRow.querySelector('button').classList.add('pomodoro-tasks__task-text_active');    
+  }
+
+  getActiveTask(currentRow, taskArray) {
+    const currentID = currentRow.dataset.id;    
+    return taskArray.find(task => task.id === currentID);    
+  }
+
+  // getIDActiveTask(currentRow) {
+  //   return currentRow.dataset.id
+  // }
 
   
 }

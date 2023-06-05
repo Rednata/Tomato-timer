@@ -1,3 +1,5 @@
+import { Task, CommandImportanceTask } from "./Task.js";
+
 export class Tomato {
   constructor({time = 25, pause = 5, bigPause = 15, taskArray = []}) {
     if (Tomato._instance) {
@@ -8,15 +10,27 @@ export class Tomato {
     this.bigPause = bigPause;
     this.taskArray = taskArray;
     this.activeTaskID = null;
+    this.activeTask = null;
     Tomato._instance = this;
+    
   }
 
-  addTask(task) {
-    this.taskArray.push(task);    
+  createTask(text, view) {
+    const taskWrap = new CommandImportanceTask();
+    const task = taskWrap.command('standard', text);
+
+    this.addTask(task);    
+    view.createLiTask(text, task.id);
   }
 
-  addInActiveTask(task) {
-      this.activeTaskID = task.id
+  addTask(task) {    
+    this.taskArray.push(task);            
+  }
+  
+  addInActiveTask(task, view) {
+      this.activeTaskID = task.id;
+      this.activeTask = task;
+      view.createActiveTask(this.activeTask.taskName);      
   }
 
   runBreak(time, activeTask) {
